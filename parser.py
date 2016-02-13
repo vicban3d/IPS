@@ -1,5 +1,9 @@
 from scapy.layers.inet import IP, TCP
+
+from util import str_to_hex
 from driver import *
+
+TCP_ACK = 0x10
 
 
 def parse(packet):
@@ -33,18 +37,24 @@ def parse_http_request(packet):
 
 def parse_http_response(packet):
     body = str(packet[TCP].payload)
-    if body is None or body == '':
+    if body is None or body == '' or body[:4] != 'HTTP':
         return False
-    headers = body.split('\r\n\r\n')[0]
+    body_parts = body.split('\r\n\r\n')
+
+    headers = body_parts[0]
+
+    content = (str_to_hex(body_parts[1])) if len(body_parts) > 1 else ''
     code = headers.split('\r\n')[0].split(' ')[1]
     message = headers.split('\r\n')[0].split(' ')[2]
     version = headers.split('\r\n')[0].split(' ')[0]
     struct = {}
+
     for header in headers.split('\r\n')[1:]:
         struct[header.split(': ')[0]] = header.split(': ')[1]
 
     struct['Code'] = code
     struct['Message'] = message
     struct['Version'] = version
-    struct['Body'] = body.split('\r\n\r\n')[1]
+    struct['Body'] = content
+
     return http_response_driver(struct)

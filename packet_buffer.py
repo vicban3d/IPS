@@ -7,9 +7,6 @@ from executor import execute
 def start():
     # place all packets marked for forwarding in queue
     os.system('iptables -A FORWARD -j NFQUEUE --queue-num 1')
-    # reject all attempts to connect to the GW or from it
-    os.system('iptables -A INPUT -j REJECT')
-    os.system('iptables -A OUTPUT -j REJECT')
 
     # start catching packets
     NFQUEUE = NetfilterQueue()
