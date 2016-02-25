@@ -30,7 +30,7 @@ def parse_http_request(packet):
     struct['Method'] = method
     struct['Path'] = path
     struct['Version'] = version
-    struct['Body'] = lines[-1]
+    struct['Body'] = lines[-1].
 
     return http_request_driver(struct)
 
