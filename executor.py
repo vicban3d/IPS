@@ -3,6 +3,7 @@ from scapy.sendrecv import send
 from parser import parse
 from scapy.layers.inet import IP, TCP
 from scapy.all import conf
+
 RST_FLAG = 0x04
 
 

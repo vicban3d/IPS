@@ -3,6 +3,6 @@ prot_id = '4'
 
 
 def check(buf):
-    if 'google' in buf['Body']:
+    if 'virus' in buf['Body']:
         return True
     return False

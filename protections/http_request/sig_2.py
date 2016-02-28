@@ -1,7 +1,7 @@
-import re
 prot_id = '2'
 
 """
+Description:
  Multiple directory traversal vulnerabilities in Magento Community Edition (CE) 1.9.1.0 and Enterprise Edition (EE) 1.14.1.0 
  allow remote authenticated users to include and execute certain PHP files via (1) .. (dot dot) sequences in the PATH_INFO to 
  index.php or (2) vectors involving a block value in the ___directive parameter to the Cms_Wysiwyg controller in the Adminhtml module, 
@@ -27,7 +27,9 @@ alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS
 
 
 def check(struct):
-	if re.match('.*/Adminhtml_.*forwarded=',struct['Path']):
+    import re
+    if struct['Method'] == 'GET' and \
+            re.search('.*/Adminhtml_.*forwarded=', struct['Path']):
         return True
     return False
 
