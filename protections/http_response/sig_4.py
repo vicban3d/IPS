@@ -1,8 +1,15 @@
+"""
+TEST SIGNATURE
+"""
+SIGNATURE_ID = '4'
 
-prot_id = '4'
 
-
-def check(buf):
-    if 'virus' in buf['Body']:
+def check(struct):
+    """
+    Finds above-mentioned exploit.
+    :param struct: the packet struct
+    :return: True if exploit detected.
+    """
+    if 'virus' in struct['Body']:
         return True
     return False

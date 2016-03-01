@@ -1,3 +1,11 @@
+"""
+The executor sends received packets to the parser and act according to its
+response.
+
+This is the place where fragmentation support can be implemented to store
+ fragments in a buffer and assemble them before sending to the parser.
+"""
+
 from scapy.sendrecv import send
 
 from parser import parse
@@ -8,16 +16,22 @@ RST_FLAG = 0x04
 
 
 def execute(packet):
+    """
+    Pass packet to the parser for disassembly and act according to its return
+    value. The packet is dropped if the parser returns True, else it is allowed.
+    :param packet: the received packet.
+    :return: None.
+    """
     current_packet = IP(packet.get_payload())
     if parse(current_packet):
         print 'Verdict: DROP'
+        # send reset to both sides to terminate connection.
         send_reset(current_packet)
         packet.drop()
     else:
         packet.accept()
 
 
-# returns a reset to the sender.
 def send_reset(original_packet):
     """
     sends a reset message to both parties of a connection

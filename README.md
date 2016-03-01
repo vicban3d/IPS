@@ -1,3 +1,0 @@
-# IPS
-
-The IPS System
