@@ -32,6 +32,7 @@ def check(struct):
     :param struct: the packet struct
     :return: True if exploit detected.
     """
+
     import re
     if struct['Method'] == 'GET' and \
             re.search('.*/Adminhtml_.*forwarded=', struct['Path']):

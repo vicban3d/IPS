@@ -79,22 +79,25 @@ def parse_http_response(packet):
     body = str(packet[TCP].payload)
     if body is None or body == '' or body[:4] != 'HTTP':
         return False
-
     # split headers from body
     body_parts = body.split('\r\n\r\n')
     headers = body_parts[0]
-
-    content = (str_to_hex(body_parts[1])) if len(body_parts) > 1 else ''
+    content = ''
+    if len(body_parts) > 1:
+        content = (str_to_hex(body_parts[1])) if len(body_parts) > 1 else ''
     # response code
     code = headers.split('\r\n')[0].split(' ')[1]
     # response message
-    message = headers.split('\r\n')[0].split(' ')[2]
+    message = headers.split('\r\n')[0].split(code + ' ')[1]
     # response version
     version = headers.split('\r\n')[0].split(' ')[0]
+
     struct = {}
     # store all headers
-    for header in headers.split('\r\n')[1:]:
-        struct[header.split(': ')[0]] = header.split(': ')[1]
+    if len(headers.split('\r\n')) > 1:
+        for header in headers.split('\r\n')[1:]:
+            if header != '':
+                struct[header.split(': ')[0]] = header.split(': ')[1]
 
     struct['Code'] = code
     struct['Message'] = message

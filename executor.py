@@ -11,7 +11,7 @@ from scapy.sendrecv import send
 from parser import parse
 from scapy.layers.inet import IP, TCP
 from scapy.all import conf
-
+import time
 RST_FLAG = 0x04
 
 
@@ -29,6 +29,7 @@ def execute(packet):
         send_reset(current_packet)
         packet.drop()
     else:
+    	print current_packet.show()
         packet.accept()
 
 

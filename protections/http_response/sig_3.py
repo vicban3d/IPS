@@ -18,15 +18,17 @@ reference:url,malware.dontneedcoffee.com/2014/09/astrum-ek.html; classtype:troja
 SIGNATURE_ID = '3'
 
 def check(struct):
-	"""
+    """
     Finds above-mentioned exploit.
     :param struct: the packet struct
     :return: True if exploit detected.
-   	"""
-	from util import hex_to_str
-   	import re
-   	regex = re.compile('\{\(new Image\)\.src=.*%72%6f%72%72%65%6e%6f')
-   	if struct['Code'] == '200' and \
-       	regex.search(hex_to_str(struct['Body'])):
-       	return True
-   	return False
+    """
+
+    from util import hex_to_str
+    import re
+
+    regex = re.compile('\{\(new Image\)\.src=.*%72%6f%72%72%65%6e%6f')
+    if struct['Code'] == '200' and \
+        regex.search(hex_to_str(struct['Body'])):
+        return True
+    return False
