@@ -29,7 +29,6 @@ def execute(packet):
         send_reset(current_packet)
         packet.drop()
     else:
-    	print current_packet.show()
         packet.accept()
 
 
